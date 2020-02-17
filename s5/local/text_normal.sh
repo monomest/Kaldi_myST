@@ -28,7 +28,7 @@ sed -i 's/\(.*\)/\U\1/' $file
 sed -i "s/MS\. /MS /g; s/MRS\. /MRS /g; s/MR\. /MR /g" $file
 
 # 4. Replaces "&" with "AND"
-sed -i "s/\&/AND/g" $file
+sed -i "s/\&/ AND /g" $file
 
 # 5. Replaces full stop, ." , ? and ! with a newline
 sed -i "s/\. /\n/g; s/\.\"/\n/g; s/\?/\n/g; s/\!/\n/g" $file

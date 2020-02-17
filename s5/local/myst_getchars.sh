@@ -4,25 +4,33 @@
 # Output: uniqchar.txt
 #         trans.txt
 
-MYST_ROOT=/srv/scratch/z5160268/2020_TasteofResearch/MyST_Kids_Corpus
-FILE=transcripts.txt
-FILE=$MYST_ROOT/$FILE
+CUR_DIR=$(pwd)
+MYST_ROOT=/srv/scratch/z5160268/2020_TasteofResearch/MyST_Kids_Corpus	# Path to MyST corpus
+FILE=transcripts.txt	# File to be created for storing all the transcription
+FILE=$MYST_ROOT/$FILE	
 
-UCHAR=local/uniqchar.txt
-TRANS=local/trans.txt
-TRANS_LM=local/trans_lm.txt
-TAGS=local/tags.txt
+UCHAR=local/uniqchar.txt	# Output file
+NUCHAR=local/uniqchar-new.txt	# Output file
+TRANS=local/trans.txt		# Output file
+TRANS_LM=local/trans_lm.txt	# Output file
+TTRANS_LM=local/trans_lm-tmp.txt	# Output file
+TAGS=local/tags.txt		# Output file
 touch $UCHAR
+touch $NUCHAR
 touch $TRANS
 touch $TRANS_LM
+touch $TTRANS_LM
 touch $TAGS
 
 #sed -i "s/[[:space:]]\+/ /g" $FILE
 
 #echo "Creating local/trans.txt..."
 #while read line; do
-#	trans=$(cut -d ' ' -f2- <<< "$line")
-#	echo "$trans" >> $TRANS
+#	fields=$(echo "$line" | grep -o " " | wc -l)
+#	if [ $fields -gt 0 ]; then
+#		trans=$(cut -d ' ' -f2- <<< "$line")
+#		echo "$trans" >> $TRANS
+#	fi
 #done < $FILE
 
 #echo "Creating local/uniqchar.txt..."
@@ -50,7 +58,18 @@ echo "Sorting..."
 sort -o -u $TAGS
 
 # Remove all the tags and event labels
-echo "Removing all tags and event labels..."
-sed 's/<[^>]*>/ /g; s/([^)]*)/ /g; s/\[[^]]*\]/ /g; s/\+[^+]*+/ /g; s/\*[[:graph:]]*\*/ /g;' $TRANS > $TRANS_LM
+echo "Removing all tags and event labels from transcription for Language Model. Creating $TTRANS_LM..."
+sed 's/<[^>]*>/ /g; s/([^)]*)/ /g; s/\[[^]]*\]/ /g; s/\+[^+]*+/ /g; s/\*[[:graph:]]*\*/ /g;' $TRANS > $TTRANS_LM
+
+# Remove floating < + [ ) > / (not too sure about what the slashes mean) and remove <no_signal <side_speech +um and remove and replace these characters ‘ ’ –…
+echo "Cleaning up the transcription for Language Model. Creating $TRANS_LM..."
+sed "s/<no_signal/ /g; s/<side_speech/ /g; s/+um/ /g; /^myst_/d; s/</ /g; s/\+/ /g; s/\[/ /g; s/)/ /g; s/>/ /g; s/\// /g; s/‘/'/g; s/’/'/g; s/–/-/g; s/…/ /g" $TTRANS_LM > $TRANS_LM
+
+# Normalise the text
+local/text_normal.sh $CUR_DIR $TRANS_LM
+
+echo "Creating $NUCHAR..."
+# Get all the unique characters
+cat $TRANS_LM | fold -w1 | sort -u > $NUCHAR
 
 echo "DONE"
