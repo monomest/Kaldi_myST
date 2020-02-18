@@ -1,0 +1,31 @@
+Training bigram LM...
+Preparing data...
+/srv/scratch/z5160268/2020_TasteofResearch/kaldi/egs/Kaldi_myST/s5/../../../tools/srilm/bin/i686-m64
+which: no ngram-count in (/srv/scratch/z5160268/2020_TasteofResearch/kaldi/egs/Kaldi_myST/s5/../../../src/bin:/srv/scratch/z5160268/2020_TasteofResearch/kaldi/egs/Kaldi_myST/s5/../../../src/chainbin:/srv/scratch/z5160268/2020_TasteofResearch/kaldi/egs/Kaldi_myST/s5/../../../src/featbin:/srv/scratch/z5160268/2020_TasteofResearch/kaldi/egs/Kaldi_myST/s5/../../../src/fgmmbin:/srv/scratch/z5160268/2020_TasteofResearch/kaldi/egs/Kaldi_myST/s5/../../../src/fstbin:/srv/scratch/z5160268/2020_TasteofResearch/kaldi/egs/Kaldi_myST/s5/../../../src/gmmbin:/srv/scratch/z5160268/2020_TasteofResearch/kaldi/egs/Kaldi_myST/s5/../../../src/ivectorbin:/srv/scratch/z5160268/2020_TasteofResearch/kaldi/egs/Kaldi_myST/s5/../../../src/kwsbin:/srv/scratch/z5160268/2020_TasteofResearch/kaldi/egs/Kaldi_myST/s5/../../../src/latbin:/srv/scratch/z5160268/2020_TasteofResearch/kaldi/egs/Kaldi_myST/s5/../../../src/lmbin:/srv/scratch/z5160268/2020_TasteofResearch/kaldi/egs/Kaldi_myST/s5/../../../src/nnet2bin:/srv/scratch/z5160268/2020_TasteofResearch/kaldi/egs/Kaldi_myST/s5/../../../src/nnet3bin:/srv/scratch/z5160268/2020_TasteofResearch/kaldi/egs/Kaldi_myST/s5/../../../src/nnetbin:/srv/scratch/z5160268/2020_TasteofResearch/kaldi/egs/Kaldi_myST/s5/../../../src/online2bin:/srv/scratch/z5160268/2020_TasteofResearch/kaldi/egs/Kaldi_myST/s5/../../../src/onlinebin:/srv/scratch/z5160268/2020_TasteofResearch/kaldi/egs/Kaldi_myST/s5/../../../src/rnnlmbin:/srv/scratch/z5160268/2020_TasteofResearch/kaldi/egs/Kaldi_myST/s5/../../../src/sgmm2bin:/srv/scratch/z5160268/2020_TasteofResearch/kaldi/egs/Kaldi_myST/s5/../../../src/sgmmbin:/srv/scratch/z5160268/2020_TasteofResearch/kaldi/egs/Kaldi_myST/s5/../../../src/tfrnnlmbin:/srv/scratch/z5160268/2020_TasteofResearch/kaldi/egs/Kaldi_myST/s5/../../../src/cudadecoderbin:/srv/scratch/z5160268/2020_TasteofResearch/kaldi/egs/Kaldi_myST/s5/utils/:/srv/scratch/z5160268/2020_TasteofResearch/kaldi/egs/Kaldi_myST/s5/../../../tools/openfst/bin:/srv/scratch/z5160268/2020_TasteofResearch/kaldi/egs/Kaldi_myST/s5:/srv/scratch/z5160268/2020_TasteofResearch/kaldi/egs/Kaldi_CU/bin:/apps/sox/14.4.2/bin:/apps/intel/Composer/debugger_2018/gdb/intel64_mic/bin:/apps/intel/Composer/compilers_and_libraries_2019.0.117/linux/bin/intel64:/apps/python/3.6.5/bin:/apps/cuda/10.1/bin:/usr/local/bin:/usr/lib64/qt-3.3/bin:/usr/lib64/ccache:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/pbs/bin:/opt/dell/srvadmin/iSM/bin)
+Creating local/tags.txt...
+Getting the tags < >
+Getting the tags ( )
+Getting the tags [ ]
+Getting the tags + +
+Getting the tags * *
+Sorting...
+Removing all tags and event labels from transcription for Language Model. Creating local/trans_lm-tmp.txt...
+Cleaning up the transcription for Language Model. Creating local/trans_lm.txt...
+Creating local/uniqchar-new.txt...
+DONE
+warning: no singleton counts
+GT discounting disabled
+warning: no singleton counts
+GT discounting disabled
+arpa2fst --disambig-symbol=#0 --read-symbol-table=/srv/scratch/z5160268/2020_TasteofResearch/kaldi/egs/Kaldi_myST/s5/data/lang/words.txt /srv/scratch/z5160268/2020_TasteofResearch/kaldi/egs/Kaldi_myST/s5/data/local/lm_srilm/bi.lm /srv/scratch/z5160268/2020_TasteofResearch/kaldi/egs/Kaldi_myST/s5/data/lang/G.fst 
+ERROR (arpa2fst[5.5.608~1-23868]:Input():kaldi-io.cc:756) Error opening input stream /srv/scratch/z5160268/2020_TasteofResearch/kaldi/egs/Kaldi_myST/s5/data/lang/words.txt
+
+[ Stack-Trace: ]
+/srv/scratch/z5160268/2020_TasteofResearch/kaldi/src/lib/libkaldi-base.so(kaldi::MessageLogger::LogMessage() const+0x8b7) [0x2adb61ed0d6d]
+arpa2fst(kaldi::MessageLogger::LogAndThrow::operator=(kaldi::MessageLogger const&)+0x11) [0x41126f]
+/srv/scratch/z5160268/2020_TasteofResearch/kaldi/src/lib/libkaldi-util.so(kaldi::Input::Input(std::string const&, bool*)+0x8a) [0x2adb61a0c2fc]
+arpa2fst(main+0x581) [0x40ec81]
+/lib64/libc.so.6(__libc_start_main+0xf5) [0x2adb69721505]
+arpa2fst() [0x40e639]
+
+kaldi::KaldiFatalError

@@ -8,11 +8,11 @@
 # Output: data/local/lm_srilm directory
 #         data/local/lm_srilm/tmp directory and contents 
 
-CU_ROOT=$1
+MYST_ROOT=$1
 CUR_DIR=$2
-
-#CUR_DIR=/media/renee/Windows/Users/rslaj/Documents/02_Work/2019_2020_Taste-of-Research/kaldi/egs/Kaldi_CU/s5  # Path to current s5 directory
-#CU_ROOT=/media/renee/Windows/Users/rslaj/Documents/02_Work/2019_2020_Taste-of-Research/CU_Kids_Corpus   # Path to CU Kids Speech Corpus
+echo "Preparing data..."
+#CUR_DIR=/media/renee/Windows/Users/rslaj/Documents/02_Work/2019_2020_Taste-of-Research/kaldi/egs/Kaldi_myST/s5  # Path to current s5 directory
+#CU_ROOT=/media/renee/Windows/Users/rslaj/Documents/02_Work/2019_2020_Taste-of-Research/MyST_Kids_Corpus   # Path to CU Kids Speech Corpus
 
 # Check that the path to the corpus is passed as the argument
 if [ $# != 2 ]; then
@@ -31,22 +31,19 @@ fi
 
 langdir=`pwd`/data/lang
 dir=`pwd`/data/local/lm_srilm
-dirtmp=$dir/tmp
 
 #Check if dir exist, otherwise create it
 [ -d $dir ] || mkdir -p $dir || exit 1
-[ -d $dirtmp ] || mkdir -p $dirtmp || exit 1
 
-# Concatenate all the scripted story, sentences and summary text in file $dir/scripted_txt.tmp
-for file in $dir/tmp/sentences.txt $dir/tmp/stories.txt $dir/tmp/summaries.txt; do
-	cat $file >> $dir/scripted_txt.tmp
-done
+# Prepare the data
+local/myst_lm_prep.sh $MYST_ROOT $CUR_DIR
 
-file=$dir/scripted_txt.tmp
-local/text_normal.sh $CUR_DIR $file
+# Copy local/trans_lm.txt into $dir/scripted_txt.tmp
+cp local/trans_lm.txt $dir/scripted_txt.tmp
 
 #Get unique set of OGI words 
 cat $dir/scripted_txt.tmp | tr " " "\n" | sort -u > $dir/scripted_words.tmp
+sed -i '/^$/d' $dir/scripted_words.tmp
 
 #Use ngram-count from srilm to generate bi gram LM from the list of scripted words
 ngram-count -text $dir/scripted_txt.tmp -order 2 -lm $dir/bi.lm
