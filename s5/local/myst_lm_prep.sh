@@ -48,22 +48,22 @@ touch $TAGS
 echo "Creating local/tags.txt..."
 # Get all the tags and labels for < >
 echo "Getting the tags < >"
-grep -o "<[^>]*>" $TRANS | sort -u >> $TAGS
+grep -o "<[^>]*>" $TRANS | sort -u >> $TAGS-tmp
 # ( )
 echo "Getting the tags ( )"
-grep -o "([^)]*)" $TRANS | sort -u >> $TAGS
+grep -o "([^)]*)" $TRANS | sort -u >> $TAGS-tmp
 # []
 echo "Getting the tags [ ]"
-grep -o "\[[^]]*\]" $TRANS | sort -u >> $TAGS
+grep -o "\[[^]]*\]" $TRANS | sort -u >> $TAGS-tmp
 # + +
 echo "Getting the tags + +"
-grep -o "\+[^+]*+" $TRANS | sort -u >> $TAGS
+grep -o "\+[^+]*+" $TRANS | sort -u >> $TAGS-tmp
 # * *
 echo "Getting the tags * *"
-grep -o "\*[[:graph:]]*\*" $TRANS | sort -u >> $TAGS
+grep -o "\*[[:graph:]]*\*" $TRANS | sort -u >> $TAGS-tmp
 
 echo "Sorting..."
-sort -o -u $TAGS
+sort -u $TAGS-tmp > $TAGS
 
 # Remove all the tags and event labels
 echo "Removing all tags and event labels from transcription for Language Model. Creating $TTRANS_LM..."
@@ -73,7 +73,10 @@ sed 's/<[^>]*>/ /g; s/([^)]*)/ /g; s/\[[^]]*\]/ /g; s/\+[^+]*+/ /g; s/\*[[:graph
 echo "Cleaning up the transcription for Language Model. Creating $TRANS_LM..."
 sed "s/<no_signal/ /g; s/<side_speech/ /g; s/+um/ /g; /^myst_/d; s/</ /g; s/\+/ /g; s/\[/ /g; s/)/ /g; s/>/ /g; s/\// /g; s/‘/'/g; s/’/'/g; s/–/-/g; s/…/ /g; s/ / /g" $TTRANS_LM > $TRANS_LM
 
-# Normalise the text
+# Insert a space when there is a number followed by a letter or vice versa
+sed -i "s/\([0-9]\)\([a-zA-Z]\)/\1 \2/g; s/\([a-zA-Z]\)\([0-9]\)/\1 \2/g" $TRANS_LM
+
+#Normalise the text
 local/text_normal.sh $CUR_DIR $TRANS_LM
 
 echo "Creating $NUCHAR..."
